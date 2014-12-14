@@ -6,36 +6,56 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:41:55 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/10 09:58:59 by ncolliau         ###   ########.fr       */
+/*   Updated: 2014/12/14 11:37:21 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		main(int argc, char **argv)
+void	draw_window(void *p_mlx, void *p_win)
 {
-	void	*p_mlx;
-	void	*win;
 	int		x;
 	int		y;
 
-	(void)argc;
-	(void)argv;
 	x = 100;
-	p_mlx = mlx_init();
-	win = mlx_new_window(p_mlx, 400, 400, "fdf 42");
 	while (x != 200)
 	{
 		y = 100;
 		while (y != 200)
 		{
-			mlx_pixel_put(p_mlx, win, x, y, 0xff0000);
-			usleep(500);
+			mlx_pixel_put(p_mlx, p_win, x, y, 0xff0000);
 			y++;
 		}
 		x++;
 	}
-	sleep(5);
-	(void)win;
+}
+
+int		expose_hook(t_fdf *env)
+{
+	draw_window(env->mlx, env->win);
+	return (0);
+}
+
+int		key_hook(int keycode, t_fdf *env)
+{
+	(void)env;
+	ft_putnbr(keycode);
+	ft_putstr("\n");
+	if (keycode == 65307)
+		exit(EXIT_SUCCESS);
+	return (0);
+}
+
+int		main(int argc, char **argv)
+{
+	t_fdf	env;
+
+	(void)argc;
+	(void)argv;
+	env.mlx = mlx_init();
+	env.win = mlx_new_window(env.mlx, 400, 400, "fdf 42");
+	mlx_expose_hook(env.win, expose_hook, &env);
+	mlx_key_hook(env.win, key_hook, &env);
+	mlx_loop(env.mlx);
 	return (0);
 }
