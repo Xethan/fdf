@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tabstrlen.c                                     :+:      :+:    :+:   */
+/*   ft_nbrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/22 11:35:58 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/11/22 11:46:36 by ncolliau         ###   ########.fr       */
+/*   Created: 2014/12/16 14:49:02 by ncolliau          #+#    #+#             */
+/*   Updated: 2014/12/17 10:30:00 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_tabstrlen(char **tabstr)
+size_t	ft_nbrlen(long long nbr)
 {
-	int		i;
+	size_t	length;
 
-	if (tabstr == NULL)
-		return (0);
-	i = 0;
-	while (tabstr[i])
-		i++;
-	return (i);
+	length = 0;
+	if (nbr == 0)
+		length = 1;
+	else
+	{
+		while (nbr != 0)
+		{
+			nbr /= 10;
+			length++;
+		}
+	}
+	return (length);
 }

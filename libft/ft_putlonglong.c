@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_putlonglong.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/05 15:29:46 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/16 13:54:28 by ncolliau         ###   ########.fr       */
+/*   Created: 2014/12/16 14:33:04 by ncolliau          #+#    #+#             */
+/*   Updated: 2014/12/17 11:15:31 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	ft_putlonglong(long long nbr)
 {
-	size_t	i;
-	void	*cpy;
-
-	i = 0;
-	if (dst == NULL || src == NULL)
-		return (NULL);
-	if ((cpy = malloc(len * sizeof(*src))) == NULL)
-		return (NULL);
-	while (i != len)
+	if (nbr < 0)
 	{
-		*((char *)cpy + i) = *((char *)src + i);
-		i++;
+		nbr *= -1;
+		ft_putchar('-');
 	}
-	i = 0;
-	while (i != len)
+	if (nbr >= 10)
 	{
-		*((char *)dst + i) = *((char *)cpy + i);
-		i++;
+		ft_putlonglong(nbr / 10);
+		ft_putchar('0' + (nbr % 10));
 	}
-	free(cpy);
-	return (dst);
+	else
+		ft_putchar('0' + nbr);
 }
