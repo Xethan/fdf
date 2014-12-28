@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:43:30 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/27 16:42:29 by ncolliau         ###   ########.fr       */
+/*   Updated: 2014/12/28 12:31:12 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ t_env			get_map(char *file_name);
 void			*malloc_me(size_t size);
 
 void			fdf(t_env e);
+
+void			point_and_line(t_env e, int x, int y);
 
 int				get_next_line(int const fd, char **line);
 

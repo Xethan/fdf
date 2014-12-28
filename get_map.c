@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/27 15:27:19 by ncolliau         ###   ########.fr       */
+/*   Updated: 2014/12/28 15:25:55 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_env	get_map(char *file_name)
 	e.map = (t_point **)malloc_me(100 * sizeof(t_point *));
 	if ((fd = open(file_name, O_RDONLY)) == -1)
 	{
-		perror("open:");
+		ft_putstr_fd("fdf: ", 2);
+		perror(file_name);
 		exit(EXIT_FAILURE);
 	}
 	while (get_next_line(fd, &line) == 1)
@@ -51,8 +52,8 @@ t_env	get_map(char *file_name)
 			while (line[i] && !ft_isdigit(line[i]))
 				i++;
 			e.map[e.y][e.x].z = ft_atoi(line + i);
-			e.map[e.y][e.x].x = 50 + e.map[e.y][e.x].z + e.x * 20;
-			e.map[e.y][e.x].y = 50 - e.map[e.y][e.x].z + e.y * 20;
+			e.map[e.y][e.x].x = 200 - 1.2 * e.map[e.y][e.x].z + e.x * 20 - e.y * 10;
+			e.map[e.y][e.x].y = 50 - 1.2 * e.map[e.y][e.x].z + e.y * 20 + e.x * 10;
 			i += ft_nbrlen(e.map[e.y][e.x].z);
 			e.x++;
 		}
@@ -61,6 +62,7 @@ t_env	get_map(char *file_name)
 	}
 	e.mlx = mlx_init();
 	e.win = mlx_new_window(e.mlx, 800, 800, "fdf 42");
+	close(fd);
 	return (e);
 }
 

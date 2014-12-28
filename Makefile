@@ -6,13 +6,13 @@
 #    By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/14 11:02:20 by ncolliau          #+#    #+#              #
-#    Updated: 2014/12/27 15:05:59 by ncolliau         ###   ########.fr        #
+#    Updated: 2014/12/28 12:30:44 by ncolliau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-SRC = fdf.c get_next_line.c get_map.c
+SRC = fdf.c get_next_line.c get_map.c draw.c
 
 OBJ = $(SRC:.c=.o)
 
