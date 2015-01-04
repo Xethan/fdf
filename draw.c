@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/28 12:26:49 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/28 15:31:35 by ncolliau         ###   ########.fr       */
+/*   Updated: 2014/12/31 17:00:39 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	right_draw(t_env e, t_point p1, t_point p2, float a)
 	float	b;
 
 	b = p1.y - a * p1.x;
-	if (p2.x - p1.x > 0)
-		p1.x++;
-	else
-		p1.x--;
+	(p2.x - p1.x > 0) ? p1.x++ : p1.x--;
 	while (p1.x != p2.x)
 	{
 		flt = a * p1.x + b;
@@ -30,10 +27,7 @@ void	right_draw(t_env e, t_point p1, t_point p2, float a)
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0xff0000);
 		else
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0x00df00);
-		if (p2.x - p1.x > 0)
-			p1.x++;
-		else
-			p1.x--;
+		(p2.x - p1.x > 0) ? p1.x++ : p1.x--;
 	}
 }
 
@@ -43,10 +37,7 @@ void	down_draw(t_env e, t_point p1, t_point p2, float a)
 	float	b;
 
 	b = p1.y - a * p1.x;
-	if (p2.y - p1.y > 0)
-		p1.y++;
-	else
-		p1.y--;
+	(p2.y - p1.y > 0) ? p1.y++ : p1.y--;
 	while (p1.y != p2.y)
 	{
 		if (p2.x != p1.x)
@@ -58,10 +49,7 @@ void	down_draw(t_env e, t_point p1, t_point p2, float a)
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0xff0000);
 		else
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0x00df00);
-		if (p2.y - p1.y > 0)
-			p1.y++;
-		else
-			p1.y--;
+		(p2.y - p1.y > 0) ? p1.y++ : p1.y--;
 	}
 }
 
@@ -71,13 +59,14 @@ void	draw_segment(t_env e, t_point p1, t_point p2, int pos)
 	float	dy;
 	float	a;
 
+	(void)pos;
 	dy = p2.y - p1.y;
 	dx = p2.x - p1.x;
 	if (dx != 0)
 		a = dy / dx;
-	if (dx != 0 && pos == RIGHT)
+	if (dx != 0)
 		right_draw(e, p1, p2, a);
-	else if (dy != 0)
+	if (dy != 0)
 		down_draw(e, p1, p2, a);
 }
 
@@ -87,11 +76,11 @@ void	point_and_line(t_env e, int x, int y)
 
 	z = e.map[y][x].z;
 	if (z == 0)
-		mlx_pixel_put(e.mlx, e.win, e.map[y][x].x, e.map[y][x].y, 0xffffff);
+		mlx_pixel_put(e.mlx, e.win, e.map[y][x].x, e.map[y][x].y, 0x00df00);
 	else
 		mlx_pixel_put(e.mlx, e.win, e.map[y][x].x, e.map[y][x].y, 0xff0000);
 	if (x != e.x - 1)
-		draw_segment(e, e.map[y][x], e.map[y][x + 1], RIGHT);
+		draw_segment(e, e.map[y][x], e.map[y][x + 1], X);
 	if (y != e.y - 1)
-		draw_segment(e, e.map[y][x], e.map[y + 1][x], DOWN);
+		draw_segment(e, e.map[y][x], e.map[y + 1][x], Y);
 }

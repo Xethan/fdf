@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:41:55 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/28 15:30:33 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/04 15:07:11 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,33 @@ int		key_hook(int keycode, t_env *e)
 {
 	int		i;
 
-	(void)e;
+	//ft_putnbr(keycode);
+	//ft_putendl("");
+	if (keycode == 65455)
+		*e = scale_z(*e, -1);
+	if (keycode == 65450)
+		*e = scale_z(*e, 1);
+	if (keycode == 65451)
+		*e = zoom(*e, 1);
+	if (keycode == 65453)
+		*e = zoom(*e, -1);
+	if (keycode == 65361)
+		*e = move(*e, -1, X);
+	if (keycode == 65363)
+		*e = move(*e, 1, X);
+	if (keycode == 65364)
+		*e = move(*e, 1, Y);
+	if (keycode == 65362)
+		*e = move(*e, -1, Y);
+	if (keycode == 114)
+		*e = reset(*e);
+	if ((keycode >= 65361 && keycode <= 65364)
+		|| keycode == 65451 || keycode == 65453
+		|| keycode == 65455 || keycode == 65450 || keycode == 114)
+	{
+		mlx_clear_window(e->mlx, e->win);
+		draw_window(e);
+	}
 	if (keycode == 65307)
 	{
 		i = 0;
@@ -54,6 +80,8 @@ int		key_hook(int keycode, t_env *e)
 
 void	fdf(t_env e)
 {
+	e.mlx = mlx_init();
+	e.win = mlx_new_window(e.mlx, 1000, 1000, "fdf 42");
 	mlx_expose_hook(e.win, expose_hook, &e);
 	mlx_key_hook(e.win, key_hook, &e);
 	mlx_loop(e.mlx);

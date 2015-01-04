@@ -6,45 +6,43 @@
 #    By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/14 11:02:20 by ncolliau          #+#    #+#              #
-#    Updated: 2014/12/28 12:30:44 by ncolliau         ###   ########.fr        #
+#    Updated: 2015/01/04 14:47:09 by ncolliau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-SRC = fdf.c get_next_line.c get_map.c draw.c
-
-OBJ = $(SRC:.c=.o)
+OBJ = fdf.o get_next_line.o get_map.o draw.o key_hook.o
 
 PATH_INCLUDES = ./includes
 
 FLAGS = -Wall -Wextra -Werror
 
-.PHONY: make, all, make_libft, clean, fclean, re, norme
+LIB = -L /usr/X11/lib -lmlx -lXext -lX11 -lm
 
-all : make_libft $(NAME)
+.PHONY: make, all, $(NAME), libft/libft.a, clean, fclean, re, norme
 
-$(NAME) : $(SRC)
-			gcc $(FLAGS) -I $(PATH_INCLUDES) -c $(SRC) \
-			-L /usr/X11/lib -lmlx -lXext -lX11 -lm
-			gcc $(FLAGS) -o $(NAME) $(OBJ) libft/libft.a \
-			-L /usr/X11/lib -lmlx -lXext -lX11 -lm
+all : $(NAME)
 
-make_libft :
+$(NAME) : $(OBJ) libft/libft.a
+			gcc $(FLAGS) -o $(NAME) $(OBJ) libft/libft.a $(LIB)
+
+$(OBJ): %.o: %.c includes/fdf.h includes/get_next_line.h
+			gcc $(FLAGS) -I $(PATH_INCLUDES) -c $< -o $@
+
+libft/libft.a :
 			make -C libft/
 
 clean :
 			@rm -f $(OBJ)
 			@echo "clean done"
-			make -C libft/ clean
 
 fclean : clean
 			rm -f $(NAME)
-			rm -f libft/libft.a
 
 re : fclean all
 
 norme :
-			norminette $(SRC) \
+			norminette $(OBJ:.o=.c) \
 			includes/fdf.h includes/get_next_line.h includes/libft.h
 			make -C libft/ norme

@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/28 15:25:55 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/04 15:01:05 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,11 @@ void	*malloc_me(size_t size)
 	return (content);
 }
 
-t_env	get_map(char *file_name)
+t_env	get_map(int fd, t_env e)
 {
-	t_env	e;
 	char	*line;
-	int		fd;
 	int		i;
 
-	e.x = 0;
-	e.y = 0;
-	line = NULL;
-	e.map = (t_point **)malloc_me(100 * sizeof(t_point *));
-	if ((fd = open(file_name, O_RDONLY)) == -1)
-	{
-		ft_putstr_fd("fdf: ", 2);
-		perror(file_name);
-		exit(EXIT_FAILURE);
-	}
 	while (get_next_line(fd, &line) == 1)
 	{
 		e.x = 0;
@@ -52,26 +40,41 @@ t_env	get_map(char *file_name)
 			while (line[i] && !ft_isdigit(line[i]))
 				i++;
 			e.map[e.y][e.x].z = ft_atoi(line + i);
-			e.map[e.y][e.x].x = 200 - 1.2 * e.map[e.y][e.x].z + e.x * 20 - e.y * 10;
-			e.map[e.y][e.x].y = 50 - 1.2 * e.map[e.y][e.x].z + e.y * 20 + e.x * 10;
+			e.map[e.y][e.x].x = e.x_mv + e.scale * 2 * (e.x - e.y);
+			e.map[e.y][e.x].y = e.y_mv + e.scale * (e.x + (e.y - e.z_scale * e.map[e.y][e.x].z));
 			i += ft_nbrlen(e.map[e.y][e.x].z);
 			e.x++;
 		}
 		free(line);
 		e.y++;
 	}
-	e.mlx = mlx_init();
-	e.win = mlx_new_window(e.mlx, 800, 800, "fdf 42");
-	close(fd);
 	return (e);
 }
 
 int		main(int argc, char **argv)
 {
 	t_env	e;
+	int		fd;
 
-	(void)argc;
-	e = get_map(argv[1]);
+	e.x = 0;
+	e.y = 0;
+	e.x_mv = 350;
+	e.y_mv = 50;
+	e.scale = 15;
+	e.z_scale = 0.5;
+	e.map = (t_point **)malloc_me(100 * sizeof(t_point *));
+	if (argc == 1)
+	{
+		ft_putstr_fd("fdf: No arguments\n", 2);
+		return (0);
+	}
+	if ((fd = open(argv[1], O_RDONLY)) == -1)
+	{
+		ft_putstr_fd("fdf: ", 2);
+		perror(argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	e = get_map(fd, e);
 	fdf(e);
 	return (0);
 }
