@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:41:55 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 12:48:45 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/06 15:04:07 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,25 @@ int		key_hook(int keycode, t_env *e)
 	if (keycode == 65453)
 		*e = zoom(*e, -1);
 	if (keycode == 65361)
-		*e = move(*e, -1, X);
-	if (keycode == 65363)
 		*e = move(*e, 1, X);
-	if (keycode == 65364)
-		*e = move(*e, 1, Y);
+	if (keycode == 65363)
+		*e = move(*e, -1, X);
 	if (keycode == 65362)
+		*e = move(*e, 1, Y);
+	if (keycode == 65364)
 		*e = move(*e, -1, Y);
-	//if (keycode == 65365)
-	//	*e = rotate(*e, -1);
-	//if (keycode == 65366)
-	//	*e = rotate(*e, 1);
+	if (keycode == 65365)
+		*e = rotate(*e, -1);
+	if (keycode == 65366)
+		*e = rotate(*e, 1);
 	if (keycode == 114)
 		*e = reset(*e);
 	if (keycode == 65293)
 		*e = change_project(*e);
 	if ((keycode >= 65361 && keycode <= 65364)
 		|| keycode == 65451 || keycode == 65453 || keycode == 65293
-		|| keycode == 65455 || keycode == 65450 || keycode == 114)
-		//|| keycode == 65365 || keycode == 65366)
+		|| keycode == 65455 || keycode == 65450 || keycode == 114
+		|| keycode == 65365 || keycode == 65366)
 	{
 		mlx_clear_window(e->mlx, e->win);
 		draw_window(e);

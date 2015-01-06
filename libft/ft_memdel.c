@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/06 10:15:05 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/11/22 10:53:17 by ncolliau         ###   ########.fr       */
+/*   Updated: 2014/12/31 10:24:44 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void ft_memdel(void **ap)
 {
+	if (!ap || !*ap)
+		return ;
 	free(*ap);
 	*ap = NULL;
 }

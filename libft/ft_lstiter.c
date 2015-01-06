@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putlonglong.c                                   :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/16 14:33:04 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/29 19:57:40 by ncolliau         ###   ########.fr       */
+/*   Created: 2014/12/29 19:11:53 by ncolliau          #+#    #+#             */
+/*   Updated: 2014/12/31 10:23:17 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putlonglong(long long nbr)
+void	ft_lstiter(t_list *lst, void (*f)(t_list *elem))
 {
-	if (nbr == -9223372036854775807 - 1)
-	{
-		ft_putstr("-9223372036854775808");
+	if (!lst || !f)
 		return ;
-	}
-	if (nbr < 0)
+	while (lst)
 	{
-		nbr *= -1;
-		ft_putchar('-');
+		f(lst);
+		lst = lst->next;
 	}
-	if (nbr >= 10)
-	{
-		ft_putlonglong(nbr / 10);
-		ft_putchar('0' + (nbr % 10));
-	}
-	else
-		ft_putchar('0' + nbr);
 }

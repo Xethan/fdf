@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/28 12:26:49 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 12:48:38 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/06 14:21:46 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ void	right_draw(t_env e, t_point p1, t_point p2, float a)
 	{
 		flt = a * p1.x + b;
 		p1.y = (int)roundf(flt);
-		if (p1.z != 0 || p2.z != 0)
+		if (p1.z > 0 || p2.z > 0)
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0xff0000);
+		else if (p1.z < 0 || p2.z < 0)
+			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0x0000ff);
 		else
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0x00df00);
 		(p2.x - p1.x > 0) ? p1.x++ : p1.x--;
@@ -45,8 +47,10 @@ void	down_draw(t_env e, t_point p1, t_point p2, float a)
 			flt = (p1.y - b) / a;
 			p1.x = (int)roundf(flt);
 		}
-		if (p1.z != 0 || p2.z != 0)
+		if (p1.z > 0 || p2.z > 0)
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0xff0000);
+		else if (p1.z < 0 || p2.z < 0)
+			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0x0000ff);
 		else
 			mlx_pixel_put(e.mlx, e.win, p1.x, p1.y, 0x00df00);
 		(p2.y - p1.y > 0) ? p1.y++ : p1.y--;
@@ -77,8 +81,10 @@ void	point_and_line(t_env e, int x, int y)
 	z = e.map[y][x].z;
 	if (z == 0)
 		mlx_pixel_put(e.mlx, e.win, e.map[y][x].x, e.map[y][x].y, 0x00df00);
-	else
+	else if (z > 0)
 		mlx_pixel_put(e.mlx, e.win, e.map[y][x].x, e.map[y][x].y, 0xff0000);
+	else if (z < 0)
+		mlx_pixel_put(e.mlx, e.win, e.map[y][x].x, e.map[y][x].y, 0x0000ff);
 	if (x != e.x - 1)
 		draw_segment(e, e.map[y][x], e.map[y][x + 1], X);
 	if (y != e.y - 1)

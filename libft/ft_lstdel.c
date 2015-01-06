@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putlonglong.c                                   :+:      :+:    :+:   */
+/*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/16 14:33:04 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/29 19:57:40 by ncolliau         ###   ########.fr       */
+/*   Created: 2014/12/29 19:08:40 by ncolliau          #+#    #+#             */
+/*   Updated: 2014/12/29 20:02:01 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putlonglong(long long nbr)
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 {
-	if (nbr == -9223372036854775807 - 1)
-	{
-		ft_putstr("-9223372036854775808");
+	t_list	*tmp;
+
+	if (!alst || !del)
 		return ;
-	}
-	if (nbr < 0)
+	while (*alst)
 	{
-		nbr *= -1;
-		ft_putchar('-');
+		del((*alst)->content, (*alst)->content_size);
+		tmp = *alst;
+		*alst = (*alst)->next;
+		free(tmp);
 	}
-	if (nbr >= 10)
-	{
-		ft_putlonglong(nbr / 10);
-		ft_putchar('0' + (nbr % 10));
-	}
-	else
-		ft_putchar('0' + nbr);
+	alst = NULL;
 }

@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putlonglong.c                                   :+:      :+:    :+:   */
+/*   ft_longlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/16 14:33:04 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/29 19:57:40 by ncolliau         ###   ########.fr       */
+/*   Created: 2014/12/16 14:49:02 by ncolliau          #+#    #+#             */
+/*   Updated: 2014/12/31 12:40:54 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putlonglong(long long nbr)
+size_t	ft_longlen(long long nbr)
 {
+	size_t	length;
+
 	if (nbr == -9223372036854775807 - 1)
-	{
-		ft_putstr("-9223372036854775808");
-		return ;
-	}
-	if (nbr < 0)
-	{
-		nbr *= -1;
-		ft_putchar('-');
-	}
-	if (nbr >= 10)
-	{
-		ft_putlonglong(nbr / 10);
-		ft_putchar('0' + (nbr % 10));
-	}
+		return (20);
+	length = 0;
+	if (nbr == 0)
+		length = 1;
 	else
-		ft_putchar('0' + nbr);
+	{
+		while (nbr != 0)
+		{
+			nbr /= 10;
+			length++;
+		}
+	}
+	return (length);
 }

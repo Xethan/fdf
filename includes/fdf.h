@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:43:30 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 12:49:45 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/06 14:59:54 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ typedef struct	s_env
 	float		z_scale;
 	int			x_mv;
 	int			y_mv;
+	int			rot;
 	int			iso;
 }				t_env;
 
-t_env			get_map(char **map, t_env e);
-void			*malloc_me(size_t size);
+t_env			get_map(char **map, t_env e, size_t lines);
 
 void			fdf(t_env e);
 
@@ -59,6 +59,13 @@ t_env			rotate(t_env e, int inc);
 t_env			move(t_env e, int inc, int which);
 
 void			point_and_line(t_env e, int x, int y);
+
+
+void			*malloc_me(size_t size);
+size_t			how_many_numbers(char *line);
+char			**restralloc(char **map, int length);
+t_env			get_coord(t_env e, int y, int x);
+t_env			compute_map(t_env e);
 
 int				get_next_line(int const fd, char **line);
 

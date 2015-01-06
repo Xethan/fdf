@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strstr.c                                        :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/04 10:35:46 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/29 17:35:55 by ncolliau         ###   ########.fr       */
+/*   Created: 2014/12/29 19:13:41 by ncolliau          #+#    #+#             */
+/*   Updated: 2014/12/29 20:02:16 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strstr(const char *s1, const char *s2)
+t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	int		i;
-	char	*ptr;
+	t_list	*begin_list;
+	t_list	*old;
+	t_list	*new;
 
-	if (s1 == NULL || s2 == NULL)
+	if (!lst || !f)
 		return (NULL);
-	i = 0;
-	ptr = (char *)s1;
-	if (!ptr[0] && !s2[0])
-		return (ptr);
-	while (*ptr)
+	new = (t_list *)malloc(sizeof(t_list));
+	if (new == NULL)
+		return (NULL);
+	new = f(lst);
+	begin_list = new;
+	while (lst->next)
 	{
-		if (*ptr == s2[0] || s2[0] == '\0')
-		{
-			i = 0;
-			while (*(ptr + i) == s2[i] || s2[0] == '\0')
-			{
-				if (s2[i + 1] == '\0')
-					return (ptr);
-				i++;
-			}
-		}
-		ptr++;
+		old = new;
+		lst = lst->next;
+		new = (t_list *)malloc(sizeof(t_list));
+		if (new == NULL)
+			return (NULL);
+		new = f(lst);
+		old->next = new;
 	}
-	return (NULL);
+	return (begin_list);
 }

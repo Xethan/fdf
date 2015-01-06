@@ -6,11 +6,29 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/03 14:57:01 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/11/13 12:48:48 by ncolliau         ###   ########.fr       */
+/*   Updated: 2014/12/31 10:53:49 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+int	check_number(const char *str, const char *cmp)
+{
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = 0;
+	while (str[i] == '0')
+		i++;
+	while (str[i + len] >= '0' && str[i + len] <= '9')
+		len++;
+	if (len > ft_strlen(cmp))
+		return (-1);
+	else if (len == ft_strlen(cmp))
+		return (ft_strcmp(cmp, str + i));
+	return (1);
+}
 
 int ft_atoi(const char *str)
 {
@@ -28,11 +46,12 @@ int ft_atoi(const char *str)
 		signe = (str[i] - 44) * -1;
 		i++;
 	}
+	if (check_number(str + i, "2147483648") < 0)
+		return (0);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		num = num * 10 + (str[i] - '0');
+		num = num * 10 + signe * (str[i] - '0');
 		i++;
 	}
-	num *= signe;
 	return (num);
 }

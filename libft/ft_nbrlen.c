@@ -5,27 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/16 14:49:02 by ncolliau          #+#    #+#             */
-/*   Updated: 2014/12/17 10:30:00 by ncolliau         ###   ########.fr       */
+/*   Created: 2014/12/31 12:41:43 by ncolliau          #+#    #+#             */
+/*   Updated: 2015/01/04 16:11:27 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_nbrlen(long long nbr)
+size_t	ft_nbrlen(int n)
 {
-	size_t	length;
+	size_t	i;
 
-	length = 0;
-	if (nbr == 0)
-		length = 1;
-	else
+	i = 0;
+	if (n == -2147483648)
+		return (11);
+	if (n < 0)
 	{
-		while (nbr != 0)
-		{
-			nbr /= 10;
-			length++;
-		}
+		i++;
+		n *= -1;
 	}
-	return (length);
+	if (n == 0)
+		i++;
+	while (n > 0)
+	{
+		n = n / 10;
+		i++;
+	}
+	return (i);
 }

@@ -6,58 +6,11 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 12:48:03 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/06 16:26:36 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	*malloc_me(size_t size)
-{
-	void	*content;
-
-	if (size == 0)
-		size = 1;
-	content = malloc(size);
-	if (content == NULL)
-	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
-	return (content);
-}
-
-size_t	how_many_numbers(char *line)
-{
-	int		i;
-	size_t	ret;
-
-	i = 0;
-	ret = 0;
-	while (line[i])
-	{
-		while (line[i] && !ft_isdigit(line[i]))
-			i++;
-		while (line[i] && ft_isdigit(line[i]))
-			i++;
-		ret++;
-	}
-	return (ret);
-}
-
-char	**restralloc(char **map, int length)
-{
-	char	**tmp;
-	int		i;
-
-	i = -1;
-	tmp = map;
-	map = (char **)malloc_me((length + 1) * sizeof(char*));
-	while (++i != length)
-		map[i] = tmp[i];
-	free(tmp);
-	return (map);
-}
 
 char	**map_to_str(int fd, size_t *i)
 {
@@ -70,7 +23,6 @@ char	**map_to_str(int fd, size_t *i)
 	ret = 1;
 	while (ret == 1)
 	{
-		map = restralloc(map, *i);
 		if ((ret = get_next_line(fd, &line) == 1) == -1)
 		{
 			 ft_putendl_fd("Error get_next_line", 2);
@@ -78,6 +30,7 @@ char	**map_to_str(int fd, size_t *i)
 		}
 		if (!line[0] && ret == 0)
 			return (map);
+		map = restralloc(map, *i);
 		if (*i == 0)
 			len = how_many_numbers(line);
 		else
@@ -98,24 +51,23 @@ char	**map_to_str(int fd, size_t *i)
 	return (map);
 }
 
-t_env	get_map(char **map, t_env e)
+t_env	get_map(char **map, t_env e, size_t lines)
 {
 	int		i;
-	int		j;
+	size_t	j;
 
 	j = 0;
-	while (map[j])
+	while (j != lines)
 	{
 		e.x = 0;
 		i = 0;
 		e.map[e.y] = (t_point *)malloc_me(how_many_numbers(map[j]) * sizeof(t_point));
 		while (map[j][i])
 		{
-			while (map[j][i] && !ft_isdigit(map[j][i]))
+			while (map[j][i] && !ft_isdigit(map[j][i]))// && map[j][i] != '-')
 				i++;
 			e.map[e.y][e.x].z = ft_atoi(map[j] + i);
-			e.map[e.y][e.x].x = e.x_mv + e.scale * 2 * (e.x - e.y);
-			e.map[e.y][e.x].y = e.y_mv + e.scale * (e.x + (e.y - e.z_scale * e.map[e.y][e.x].z));
+			e = get_coord(e, e.y, e.x);
 			i += ft_nbrlen(e.map[e.y][e.x].z);
 			e.x++;
 		}
@@ -136,6 +88,7 @@ int		main(int argc, char **argv)
 	e.y = 0;
 	e.x_mv = 350;
 	e.y_mv = 50;
+	e.rot = 0;
 	e.z_scale = 0.15;
 	e.iso = 1;
 	if (argc == 1)
@@ -154,7 +107,7 @@ int		main(int argc, char **argv)
 	if (e.scale == 0)
 		e.scale = 1;
 	e.map = (t_point **)malloc_me(lines * sizeof(t_point *));
-	e = get_map(map, e);
+	e = get_map(map, e, lines);
 	while (lines-- != 0)
 		free(map[lines]);
 	free(map);
