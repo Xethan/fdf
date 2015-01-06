@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:43:30 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/04 15:00:47 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/06 12:49:45 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,19 @@ typedef struct	s_env
 	float		z_scale;
 	int			x_mv;
 	int			y_mv;
+	int			iso;
 }				t_env;
 
-t_env			get_map(int fd, t_env e);
+t_env			get_map(char **map, t_env e);
 void			*malloc_me(size_t size);
 
 void			fdf(t_env e);
 
 t_env			reset(t_env e);
+t_env			change_project(t_env e);
 t_env			scale_z(t_env e, int inc);
 t_env			zoom(t_env e, int inc);
+t_env			rotate(t_env e, int inc);
 t_env			move(t_env e, int inc, int which);
 
 void			point_and_line(t_env e, int x, int y);
