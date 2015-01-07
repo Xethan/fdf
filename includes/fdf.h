@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:43:30 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 14:59:54 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/07 16:17:52 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ typedef struct	s_env
 	t_point		**map;
 	int			x;
 	int			y;
-	int			scale;
+	int			x_win;
+	int			y_win;
+	float		scale;
 	float		z_scale;
 	int			x_mv;
 	int			y_mv;
@@ -62,7 +64,7 @@ void			point_and_line(t_env e, int x, int y);
 
 
 void			*malloc_me(size_t size);
-size_t			how_many_numbers(char *line);
+size_t			count_nb(char *line);
 char			**restralloc(char **map, int length);
 t_env			get_coord(t_env e, int y, int x);
 t_env			compute_map(t_env e);

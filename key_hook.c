@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/04 14:42:35 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 15:06:10 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/07 15:49:48 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ t_env	scale_z(t_env e, int inc)
 
 t_env	zoom(t_env e, int inc)
 {
-	if (inc == 1 || e.scale > 1)
-		e.scale += inc;
+	if (inc == 1 || e.scale > 0.5)
+		e.scale += 0.5 * inc;
 	e = compute_map(e);
 	return (e);
 }

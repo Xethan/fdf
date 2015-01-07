@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:41:55 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 15:04:07 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/07 17:05:54 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int		key_hook(int keycode, t_env *e)
 void	fdf(t_env e)
 {
 	e.mlx = mlx_init();
-	e.win = mlx_new_window(e.mlx, 1000, 1000, "fdf 42");
+	e.win = mlx_new_window(e.mlx, e.x_win, e.y_win, "fdf 42");
 	mlx_expose_hook(e.win, expose_hook, &e);
 	mlx_key_hook(e.win, key_hook, &e);
 	mlx_loop(e.mlx);

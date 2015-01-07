@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/06 13:59:14 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/06 14:22:03 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/07 16:35:43 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	*malloc_me(size_t size)
 	return (content);
 }
 
-size_t	how_many_numbers(char *line)
+size_t	count_nb(char *line)
 {
 	int		i;
 	size_t	ret;
@@ -56,7 +56,7 @@ char	**restralloc(char **map, int length)
 	while (++i != length)
 		map[i] = tmp[i];
 	map[length + 1] = NULL;
-	free(tmp);
+	//free(tmp);
 	return (map);
 }
 
