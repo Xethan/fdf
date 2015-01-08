@@ -6,18 +6,31 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/07 17:09:28 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/08 20:30:17 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	map_error(int nb_line, char **map)
+{
+	ft_putstr_fd("Wrong number of columns at line ", 2);
+	ft_putnbr_fd(nb_line + 1, 2);
+	ft_putchar_fd('\n', 2);
+	while (nb_line != -1)
+	{
+		free(map[nb_line]);
+		nb_line--;
+	}
+	free(map);
+	exit(EXIT_FAILURE);
+}
 
 char	**map_to_str(int fd, size_t *i)
 {
 	char	**map;
 	char	*line;
 	int		ret;
-	size_t	len;
 
 	*i = 0;
 	ret = 1;
@@ -25,27 +38,16 @@ char	**map_to_str(int fd, size_t *i)
 	{
 		if ((ret = get_next_line(fd, &line) == 1) == -1)
 		{
-			 ft_putendl_fd("Error get_next_line", 2);
-			 exit(EXIT_FAILURE);
+			ft_putendl_fd("Error get_next_line", 2);
+			exit(EXIT_FAILURE);
 		}
 		if (!line[0] && ret == 0)
 			return (map);
 		map = restralloc(map, *i);
-		if (*i == 0)
-			len = count_nb(line);
-		else
-		{
-			if (count_nb(line) != len)
-			{
-				ft_putstr_fd("Wrong number of columns at line ", 2);
-				ft_putnbr_fd(*i + 1, 2);
-				ft_putchar_fd('\n', 2);
-				exit(EXIT_FAILURE);
-			}
-		}
-		map[*i] = (char *)malloc_me((ft_strlen(line) + 1)* sizeof(char));
-		map[*i] = line;
-		map[*i][ft_strlen(line)] = '\0';
+		map[*i] = ft_strdup(line);
+		if (count_nb(line) != count_nb(map[0]))
+			map_error(*i, map);
+		free(line);
 		(*i)++;
 	}
 	return (map);
@@ -54,27 +56,26 @@ char	**map_to_str(int fd, size_t *i)
 t_env	get_map(char **map, t_env e, size_t lines)
 {
 	char	**line;
-	size_t	i;
-	size_t	j;
 
-	j = 0;
-	while (j != lines)
+	e.map = (t_point **)malloc_me(lines * sizeof(t_point *));
+	while (e.y != lines)
 	{
 		e.x = 0;
-		i = 0;
-		e.map[e.y] = (t_point *)malloc_me(count_nb(map[j]) * sizeof(t_point));
-		line = ft_strsplit(map[j], ' ');
-		while (i != count_nb(map[j]))
+		e.map[e.y] = (t_point *)malloc_me(count_nb(map[e.y]) * sizeof(t_point));
+		line = ft_strsplit(map[e.y], ' ');
+		//line = ft_strfuncsplit(map[e.y], check_split);
+		while (e.x != count_nb(map[e.y]))
 		{
-			e.map[e.y][e.x].z = ft_atoi(line[i]);
-		 	e = get_coord(e, e.y, e.x);
-		 	i++;
-		 	e.x++;
+			e.map[e.y][e.x].z = ft_atoi(line[e.x]);
+			e = get_coord(e, e.y, e.x);
+			free(line[e.x]);
+			e.x++;
 		}
+		free(line);
+		free(map[e.y]);
 		e.y++;
-		j++;
-		//free(line);
 	}
+	free(map);
 	return (e);
 }
 
@@ -86,13 +87,16 @@ t_env	init_e(int ac, char **av)
 	e.y = 0;
 	e.x_mv = 350;
 	e.y_mv = 50;
-	e.rot = 0;
 	e.z_scale = 0.15;
 	e.iso = 1;
 	if (ac == 4 && ft_atoi(av[2]) > 0 && ft_atoi(av[3]) > 0)
 	{
 		e.x_win = ft_atoi(av[2]);
+		if (e.x_win > 2560)
+			e.x_win = 2560;
 		e.y_win = ft_atoi(av[3]);
+		if (e.y_win > 1370)
+			e.y_win = 1370;
 	}
 	else
 	{
@@ -125,11 +129,7 @@ int		main(int ac, char **av)
 	e.scale = (lines > count_nb(map[0])) ? 300 / lines : 300 / count_nb(map[0]);
 	if (e.scale < 0.5)
 		e.scale = 0.5;
-	e.map = (t_point **)malloc_me(lines * sizeof(t_point *));
 	e = get_map(map, e, lines);
-	while (lines-- != 0)
-		free(map[lines]);
-	free(map);
 	fdf(e);
 	return (0);
 }

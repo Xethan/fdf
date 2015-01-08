@@ -6,13 +6,13 @@
 #    By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/14 11:02:20 by ncolliau          #+#    #+#              #
-#    Updated: 2015/01/07 17:25:56 by ncolliau         ###   ########.fr        #
+#    Updated: 2015/01/08 19:19:42 by ncolliau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-OBJ = fdf.o get_next_line.o get_map.o draw.o key_hook.o tools.o
+OBJ = fdf.o get_next_line.o get_map.o draw.o key_hook.o tools.o tools_bis.o
 
 PATH_INCLUDES = ./includes
 

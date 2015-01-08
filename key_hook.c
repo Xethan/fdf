@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/04 14:42:35 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/07 15:49:48 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/08 19:00:45 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 t_env	reset(t_env e)
 {
-	e.scale = 15;
+	e.scale = (e.y > e.x) ? 300 / e.y : 300 / e.x;
+	if (e.scale < 0.5)
+		e.scale = 0.5;
 	e.z_scale = 0.15;
 	e.x_mv = 350;
 	e.y_mv = 50;
@@ -29,7 +31,7 @@ t_env	change_project(t_env e)
 	else
 		e.iso = 1;
 	e = compute_map(e);
-	return(e);
+	return (e);
 }
 
 t_env	scale_z(t_env e, int inc)
@@ -47,31 +49,10 @@ t_env	zoom(t_env e, int inc)
 	return (e);
 }
 
-t_env	rotate(t_env e, int inc)
-{
-	int		x;
-	int		y;
-	
-	e.rot += inc * 2;
-	x = 0;
-	while (x != e.x)
-	{
-		y = 0;
-		while (y != e.y)
-		{
-			e.map[y][x].x = e.map[y][x].x * cos(e.rot) - e.map[y][x].y * sin(e.rot);
-			e.map[y][x].y = e.map[y][x].x * sin(e.rot) + e.map[y][x].y * cos(e.rot);
-			y++;
-		}
-		x++;
-	}
-	return (e);
-}
-
 t_env	move(t_env e, int inc, int which)
 {
-	int		x;
-	int		y;
+	size_t	x;
+	size_t	y;
 
 	if (which == X)
 		e.x_mv += 10 * inc;

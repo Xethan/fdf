@@ -6,7 +6,7 @@
 #    By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/07 15:24:29 by ncolliau          #+#    #+#              #
-#    Updated: 2015/01/04 15:56:25 by ncolliau         ###   ########.fr        #
+#    Updated: 2015/01/08 20:26:18 by ncolliau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,9 @@ OBJ =	ft_atoi.o ft_bzero.o ft_isalnum.o ft_isalpha.o ft_isascii.o \
 		ft_strncpy.o ft_strnequ.o ft_strnew.o ft_strnstr.o ft_strrchr.o \
 		ft_strsplit.o ft_strstr.o ft_strsub.o ft_strtrim.o ft_tolower.o \
 		ft_toupper.o ft_putlonglong.o ft_longlen.o ft_lstdelone.o ft_lstdel.o \
-		ft_lstiter.o ft_lstmap.o ft_nbrlen.o ft_lstlen.o
+		ft_lstiter.o ft_lstmap.o ft_nbrlen.o ft_lstlen.o ft_strndup.o \
+		ft_strcdup.o ft_strclen.o ft_putnbr_nl.o ft_putnbr_nl_fd.o \
+		ft_strfuncsplit.o
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -37,8 +39,8 @@ $(NAME) : $(OBJ)
 		@echo "libft compiled"
 		ranlib $(NAME)
 
-$(OBJ): %.o: %.c libft.h
-		gcc $(FLAGS) -I ./ -c $< -o $@
+$(OBJ): %.o: %.c ../includes/libft.h
+		gcc $(FLAGS) -I ../includes -c $< -o $@
 
 clean :
 		@rm -f $(OBJ)
@@ -50,4 +52,4 @@ fclean : clean
 re : fclean all
 
 norme :
-		norminette $(OBJ:.o=.c) libft.h
+		norminette $(OBJ:.o=.c) ../includes/libft.h

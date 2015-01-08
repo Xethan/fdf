@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:43:30 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/07 16:17:52 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/08 20:29:16 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # define X	1
 # define Y	2
+# define RED	0xAF0000
+# define GREEN	0x00AF00
+# define BLUE	0x0000AF
 
 # include <mlx.h>
 # include <stdlib.h>
@@ -37,15 +40,14 @@ typedef struct	s_env
 	void		*mlx;
 	void		*win;
 	t_point		**map;
-	int			x;
-	int			y;
+	size_t		x;
+	size_t		y;
 	int			x_win;
 	int			y_win;
 	float		scale;
 	float		z_scale;
 	int			x_mv;
 	int			y_mv;
-	int			rot;
 	int			iso;
 }				t_env;
 
@@ -57,17 +59,19 @@ t_env			reset(t_env e);
 t_env			change_project(t_env e);
 t_env			scale_z(t_env e, int inc);
 t_env			zoom(t_env e, int inc);
-t_env			rotate(t_env e, int inc);
 t_env			move(t_env e, int inc, int which);
 
-void			point_and_line(t_env e, int x, int y);
-
+void			point_and_line(t_env e, size_t x, size_t y);
 
 void			*malloc_me(size_t size);
 size_t			count_nb(char *line);
 char			**restralloc(char **map, int length);
 t_env			get_coord(t_env e, int y, int x);
 t_env			compute_map(t_env e);
+
+t_env			recompute_map(t_env e, int keycode);
+void			ft_pixel_put(t_env e, int z, int x, int y);
+int				check_split(char c);
 
 int				get_next_line(int const fd, char **line);
 

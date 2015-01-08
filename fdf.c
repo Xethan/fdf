@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:41:55 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/07 17:05:54 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/08 19:22:37 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	draw_window(t_env *e)
 {
-	int		x;
-	int		y;
+	size_t	x;
+	size_t	y;
 
 	x = 0;
 	while (x != e->x)
@@ -35,38 +35,12 @@ int		expose_hook(t_env *e)
 
 int		key_hook(int keycode, t_env *e)
 {
-	int		i;
+	size_t	i;
 
-	//ft_putnbr(keycode);
-	//ft_putendl("");
-	if (keycode == 65455)
-		*e = scale_z(*e, -1);
-	if (keycode == 65450)
-		*e = scale_z(*e, 1);
-	if (keycode == 65451)
-		*e = zoom(*e, 1);
-	if (keycode == 65453)
-		*e = zoom(*e, -1);
-	if (keycode == 65361)
-		*e = move(*e, 1, X);
-	if (keycode == 65363)
-		*e = move(*e, -1, X);
-	if (keycode == 65362)
-		*e = move(*e, 1, Y);
-	if (keycode == 65364)
-		*e = move(*e, -1, Y);
-	if (keycode == 65365)
-		*e = rotate(*e, -1);
-	if (keycode == 65366)
-		*e = rotate(*e, 1);
-	if (keycode == 114)
-		*e = reset(*e);
-	if (keycode == 65293)
-		*e = change_project(*e);
+	*e = recompute_map(*e, keycode);
 	if ((keycode >= 65361 && keycode <= 65364)
 		|| keycode == 65451 || keycode == 65453 || keycode == 65293
-		|| keycode == 65455 || keycode == 65450 || keycode == 114
-		|| keycode == 65365 || keycode == 65366)
+		|| keycode == 65455 || keycode == 65450 || keycode == 114)
 	{
 		mlx_clear_window(e->mlx, e->win);
 		draw_window(e);
@@ -90,6 +64,6 @@ void	fdf(t_env e)
 	e.mlx = mlx_init();
 	e.win = mlx_new_window(e.mlx, e.x_win, e.y_win, "fdf 42");
 	mlx_expose_hook(e.win, expose_hook, &e);
-	mlx_key_hook(e.win, key_hook, &e);
+	mlx_hook(e.win, 2, 3, key_hook, &e);
 	mlx_loop(e.mlx);
 }
