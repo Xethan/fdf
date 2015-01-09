@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/08 20:30:17 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/09 17:24:30 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	map_error(int nb_line, char **map)
 {
-	ft_putstr_fd("Wrong number of columns at line ", 2);
 	ft_putnbr_fd(nb_line + 1, 2);
 	ft_putchar_fd('\n', 2);
 	while (nb_line != -1)
@@ -45,8 +44,9 @@ char	**map_to_str(int fd, size_t *i)
 			return (map);
 		map = restralloc(map, *i);
 		map[*i] = ft_strdup(line);
-		if (count_nb(line) != count_nb(map[0]))
-			map_error(*i, map);
+		check_map(line, map, *i);
+		//if (count_nb(line) != count_nb(map[0]))
+		//	map_error(*i, map);
 		free(line);
 		(*i)++;
 	}
@@ -58,6 +58,7 @@ t_env	get_map(char **map, t_env e, size_t lines)
 	char	**line;
 
 	e.map = (t_point **)malloc_me(lines * sizeof(t_point *));
+	e.y = 0;
 	while (e.y != lines)
 	{
 		e.x = 0;
@@ -83,10 +84,6 @@ t_env	init_e(int ac, char **av)
 {
 	t_env	e;
 
-	e.x = 0;
-	e.y = 0;
-	e.x_mv = 350;
-	e.y_mv = 50;
 	e.z_scale = 0.15;
 	e.iso = 1;
 	if (ac == 4 && ft_atoi(av[2]) > 0 && ft_atoi(av[3]) > 0)
@@ -126,9 +123,11 @@ int		main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 	map = map_to_str(fd, &lines);
-	e.scale = (lines > count_nb(map[0])) ? 300 / lines : 300 / count_nb(map[0]);
+	e.scale = (lines > count_nb(map[0])) ? e.y_win / 3 / lines : e.x_win / 3 / count_nb(map[0]);
 	if (e.scale < 0.5)
 		e.scale = 0.5;
+	e.x_mv = e.x_win / 2 - e.scale * (count_nb(map[0]) - lines);
+	e.y_mv = e.y_win / 4;
 	e = get_map(map, e, lines);
 	fdf(e);
 	return (0);

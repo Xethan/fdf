@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/06 13:59:14 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/08 19:00:59 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/09 16:33:38 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ size_t	count_nb(char *line)
 	{
 		while (line[i] && !ft_isdigit(line[i]))
 			i++;
+		if (line[i] && ft_isdigit(line[i]))
+			ret++;
 		while (line[i] && ft_isdigit(line[i]))
 			i++;
-		ret++;
 	}
 	return (ret);
 }

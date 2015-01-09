@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:43:30 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/08 20:29:16 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/09 14:46:02 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct	s_env
 	int			iso;
 }				t_env;
 
+void			map_error(int nb_line, char **map);
 t_env			get_map(char **map, t_env e, size_t lines);
 
 void			fdf(t_env e);
@@ -72,6 +73,7 @@ t_env			compute_map(t_env e);
 t_env			recompute_map(t_env e, int keycode);
 void			ft_pixel_put(t_env e, int z, int x, int y);
 int				check_split(char c);
+void			check_map(char *line, char **map, int nb_line);
 
 int				get_next_line(int const fd, char **line);
 

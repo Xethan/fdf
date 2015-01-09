@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/04 14:42:35 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/08 19:00:45 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/09 17:28:59 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 t_env	reset(t_env e)
 {
-	e.scale = (e.y > e.x) ? 300 / e.y : 300 / e.x;
+	e.scale = (e.y > e.x) ? e.y_win / 3 / e.y : e.x_win / 3 / e.x;
 	if (e.scale < 0.5)
 		e.scale = 0.5;
 	e.z_scale = 0.15;
-	e.x_mv = 350;
-	e.y_mv = 50;
+	e.x_mv = e.x_win / 2 - e.scale * (e.x - e.y);
+	e.y_mv = e.y_win / 4;
 	e = compute_map(e);
 	return (e);
 }

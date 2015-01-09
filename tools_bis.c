@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/08 19:19:31 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/08 20:29:33 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/09 17:29:19 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,28 @@ void	ft_pixel_put(t_env e, int z, int x, int y)
 
 int		check_split(char c)
 {
-	if (ft_isdigit(c) || c == '-')
-		return (0);
-	return (1);
+	if (ft_isdigit(c) == 1 || c == '-')
+		return (1);
+	return (0);
+}
+
+void	check_map(char *line, char **map, int nb_line)
+{
+	//int		i;
+
+	if (count_nb(line) != count_nb(map[0]))
+	{
+		ft_putstr_fd("Wrong number of columns at line ", 2);
+		map_error(nb_line, map);
+	}
+	/*while (line[i])
+	{
+		if (line[i] == '-')
+			if (!line[i + 1] || !ft_isdigit(line[i + 1]))
+			{
+				ft_putstr_fd("Alone \"-\" on the map at line", 2);
+				map_error(nb_line, map);
+			}
+		i++;
+	}*/
 }
