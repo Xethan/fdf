@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:41:55 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/08 19:22:37 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/11 14:20:07 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ int		key_hook(int keycode, t_env *e)
 {
 	size_t	i;
 
-	*e = recompute_map(*e, keycode);
 	if ((keycode >= 65361 && keycode <= 65364)
 		|| keycode == 65451 || keycode == 65453 || keycode == 65293
 		|| keycode == 65455 || keycode == 65450 || keycode == 114)
 	{
+		*e = recompute_map(*e, keycode);
+		*e = compute_map(*e);
 		mlx_clear_window(e->mlx, e->win);
 		draw_window(e);
 	}

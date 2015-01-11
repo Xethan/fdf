@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/08 19:19:31 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/09 17:29:19 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/11 16:57:53 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,26 @@ int		check_split(char c)
 
 void	check_map(char *line, char **map, int nb_line)
 {
-	//int		i;
+	int		i;
 
+	i = 0;
 	if (count_nb(line) != count_nb(map[0]))
 	{
 		ft_putstr_fd("Wrong number of columns at line ", 2);
 		map_error(nb_line, map);
 	}
-	/*while (line[i])
+	while (line[i])
 	{
-		if (line[i] == '-')
+		if (line[i] != ' ' && line[i] != '-' && !ft_isdigit(line[i]))
+		{
 			if (!line[i + 1] || !ft_isdigit(line[i + 1]))
 			{
-				ft_putstr_fd("Alone \"-\" on the map at line", 2);
+				ft_putstr_fd("Bad character: \"", 2);
+				ft_putchar_fd(line[i], 2);
+				ft_putstr_fd("\" at line ", 2);
 				map_error(nb_line, map);
 			}
+		}
 		i++;
-	}*/
+	}
 }

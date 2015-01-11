@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/09 17:24:30 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/11 17:11:37 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	map_error(int nb_line, char **map)
 {
-	ft_putnbr_fd(nb_line + 1, 2);
-	ft_putchar_fd('\n', 2);
+	ft_putnbr_nl_fd(nb_line + 1, 2);
 	while (nb_line != -1)
 	{
 		free(map[nb_line]);
@@ -45,8 +44,6 @@ char	**map_to_str(int fd, size_t *i)
 		map = restralloc(map, *i);
 		map[*i] = ft_strdup(line);
 		check_map(line, map, *i);
-		//if (count_nb(line) != count_nb(map[0]))
-		//	map_error(*i, map);
 		free(line);
 		(*i)++;
 	}
@@ -64,7 +61,6 @@ t_env	get_map(char **map, t_env e, size_t lines)
 		e.x = 0;
 		e.map[e.y] = (t_point *)malloc_me(count_nb(map[e.y]) * sizeof(t_point));
 		line = ft_strsplit(map[e.y], ' ');
-		//line = ft_strfuncsplit(map[e.y], check_split);
 		while (e.x != count_nb(map[e.y]))
 		{
 			e.map[e.y][e.x].z = ft_atoi(line[e.x]);
@@ -80,7 +76,7 @@ t_env	get_map(char **map, t_env e, size_t lines)
 	return (e);
 }
 
-t_env	init_e(int ac, char **av)
+t_env	init_e(int ac, char **av, size_t x, size_t y)
 {
 	t_env	e;
 
@@ -89,17 +85,22 @@ t_env	init_e(int ac, char **av)
 	if (ac == 4 && ft_atoi(av[2]) > 0 && ft_atoi(av[3]) > 0)
 	{
 		e.x_win = ft_atoi(av[2]);
-		if (e.x_win > 2560)
-			e.x_win = 2560;
+		e.x_win = (e.x_win > 2560) ? 2560 : e.x_win;
+		e.x_win = (e.x_win < 100) ? 100 : e.x_win;
 		e.y_win = ft_atoi(av[3]);
-		if (e.y_win > 1370)
-			e.y_win = 1370;
+		e.y_win = (e.y_win > 1370) ? 1370 : e.y_win;
+		e.y_win = (e.y_win < 100) ? 100 : e.y_win;
 	}
 	else
 	{
 		e.x_win = 1000;
 		e.y_win = 1000;
 	}
+	e.scale = (e.y_win / y < e.x_win / x) ? e.y_win / 3 / y : e.x_win / 3 / x;
+	if (e.scale < 0.2)
+		e.scale = 0.2;
+	e.x_mv = e.x_win / 2 - e.scale * (x - y);
+	e.y_mv = e.y_win / 4;
 	return (e);
 }
 
@@ -110,7 +111,6 @@ int		main(int ac, char **av)
 	size_t	lines;
 	int		fd;
 
-	e = init_e(ac, av);
 	if (ac == 1)
 	{
 		ft_putstr_fd("fdf: No arguments\n", 2);
@@ -123,11 +123,7 @@ int		main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 	map = map_to_str(fd, &lines);
-	e.scale = (lines > count_nb(map[0])) ? e.y_win / 3 / lines : e.x_win / 3 / count_nb(map[0]);
-	if (e.scale < 0.5)
-		e.scale = 0.5;
-	e.x_mv = e.x_win / 2 - e.scale * (count_nb(map[0]) - lines);
-	e.y_mv = e.y_win / 4;
+	e = init_e(ac, av, count_nb(map[0]), lines);
 	e = get_map(map, e, lines);
 	fdf(e);
 	return (0);

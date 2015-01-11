@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/28 12:26:49 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/08 20:10:03 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/11 16:30:06 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int		is_map(t_env e, int x, int y)
 
 	abciss = e.map[y][x].x;
 	ordinat = e.map[y][x].y;
-	if (abciss <= 0 || abciss >= e.x_win || ordinat <= 0 || ordinat >= e.y_win)
+	if (abciss < 0 || abciss > e.x_win || ordinat < 0 || ordinat > e.y_win)
 		return (0);
 	return (1);
 }
