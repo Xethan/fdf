@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/06 13:59:14 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/09 16:33:38 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/12 11:02:29 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ t_env	get_coord(t_env e, int y, int x)
 	}
 	else
 	{
-		e.map[y][x].x = e.x_mv - 300 + (7 * e.z_scale) * e.map[y][x].z;
+		e.map[y][x].x = e.x_mv - 300 + (e.scale * e.z_scale) * e.map[y][x].z;
 		e.map[y][x].x += x * e.scale * 2;
-		e.map[y][x].y = e.y_mv - (7 * e.z_scale) * e.map[y][x].z;
+		e.map[y][x].y = e.y_mv - (e.scale * e.z_scale) * e.map[y][x].z;
 		e.map[y][x].y += y * e.scale * 2;
 	}
 	return (e);

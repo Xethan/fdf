@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/08 19:19:31 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/11 16:57:53 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/12 12:34:37 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,6 @@ void	ft_pixel_put(t_env e, int z, int x, int y)
 		mlx_pixel_put(e.mlx, e.win, x, y, RED);
 }
 
-int		check_split(char c)
-{
-	if (ft_isdigit(c) == 1 || c == '-')
-		return (1);
-	return (0);
-}
-
 void	check_map(char *line, char **map, int nb_line)
 {
 	int		i;
@@ -66,9 +59,9 @@ void	check_map(char *line, char **map, int nb_line)
 	}
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '-' && !ft_isdigit(line[i]))
+		if (line[i] != ' ' && !ft_isdigit(line[i]))
 		{
-			if (!line[i + 1] || !ft_isdigit(line[i + 1]))
+			if (!(line[i] == '-' && line[i + 1] && ft_isdigit(line[i + 1])))
 			{
 				ft_putstr_fd("Bad character: \"", 2);
 				ft_putchar_fd(line[i], 2);
