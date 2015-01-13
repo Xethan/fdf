@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/11 17:11:37 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/13 11:27:38 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int		main(int ac, char **av)
 		ft_putstr_fd("fdf: No arguments\n", 2);
 		return (0);
 	}
-	if ((fd = open(av[1], O_RDONLY)) == -1)
+	if ((fd = open(av[1], O_RDWR)) == -1)
 	{
 		ft_putstr_fd("fdf: ", 2);
 		perror(av[1]);

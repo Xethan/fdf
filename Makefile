@@ -6,7 +6,7 @@
 #    By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/14 11:02:20 by ncolliau          #+#    #+#              #
-#    Updated: 2015/01/08 19:19:42 by ncolliau         ###   ########.fr        #
+#    Updated: 2015/01/13 11:28:24 by ncolliau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ clean :
 
 fclean : clean
 			rm -f $(NAME)
+			make -C libft/ fclean
 
 re : fclean all
 
