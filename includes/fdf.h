@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/10 09:43:30 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/09 14:46:02 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/23 14:50:44 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ typedef struct	s_env
 	int			iso;
 }				t_env;
 
-void			map_error(int nb_line, char **map);
-t_env			get_map(char **map, t_env e, size_t lines);
+void			map_error(int nb_line, char *line);
 
 void			fdf(t_env e);
 
@@ -66,14 +65,13 @@ void			point_and_line(t_env e, size_t x, size_t y);
 
 void			*malloc_me(size_t size);
 size_t			count_nb(char *line);
-char			**restralloc(char **map, int length);
+t_point			**realloc_map(t_point **map, int length);
 t_env			get_coord(t_env e, int y, int x);
 t_env			compute_map(t_env e);
 
 t_env			recompute_map(t_env e, int keycode);
 void			ft_pixel_put(t_env e, int z, int x, int y);
-int				check_split(char c);
-void			check_map(char *line, char **map, int nb_line);
+void			check_map(char *line, size_t nb_nb, int nb_line);
 
 int				get_next_line(int const fd, char **line);
 

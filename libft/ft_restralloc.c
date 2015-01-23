@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_restralloc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/06 15:24:08 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/16 13:25:39 by ncolliau         ###   ########.fr       */
+/*   Created: 2015/01/13 12:05:54 by ncolliau          #+#    #+#             */
+/*   Updated: 2015/01/14 15:01:06 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void ft_putendl_fd(char const *s, int fd)
+char	**ft_restralloc(char **map, int length, size_t size)
 {
-	if (s != NULL)
-		write(fd, s, ft_strlen(s));
-	ft_putchar_fd('\n', fd);
+	char	**tmp;
+	int		i;
+
+	i = -1;
+	if (length != 0)
+		tmp = map;
+	map = (char **)malloc((length + size + 1) * sizeof(char*));
+	if (map == NULL)
+		return (NULL);
+	while (++i != length)
+		map[i] = tmp[i];
+	map[length + size] = NULL;
+	if (length != 0)
+		free(tmp);
+	return (map);
 }

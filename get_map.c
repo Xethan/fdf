@@ -6,80 +6,63 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/14 11:40:41 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/13 11:27:38 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/23 15:30:52 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	map_error(int nb_line, char **map)
+void	map_error(int nb_line, char *line)
 {
 	ft_putnbr_nl_fd(nb_line + 1, 2);
-	while (nb_line != -1)
-	{
-		free(map[nb_line]);
-		nb_line--;
-	}
-	free(map);
+	free(line);
 	exit(EXIT_FAILURE);
 }
 
-char	**map_to_str(int fd, size_t *i)
+t_env	line_to_coord(t_env e, char *line)
 {
-	char	**map;
+	char	**str;
+
+	e.map = realloc_map(e.map, e.y);
+	str = ft_sizesplit(line, ' ', &(e.x));
+	e.map[e.y] = (t_point *)malloc(e.x * sizeof(t_point));
+	while (e.x-- != 0)
+		e.map[e.y][e.x].z = ft_atoi(str[e.x]);
+	e.x = count_nb(line);
+	ft_freetab(str, e.x);
+	return (e);
+}
+
+t_env	map_to_str(int fd, t_env e)
+{
 	char	*line;
 	int		ret;
+	int		nb_nb;
 
-	*i = 0;
+	e.y = 0;
 	ret = 1;
 	while (ret == 1)
 	{
-		if ((ret = get_next_line(fd, &line) == 1) == -1)
+		if ((ret = get_next_line(fd, &line)) == -1)
 		{
 			ft_putendl_fd("Error get_next_line", 2);
 			exit(EXIT_FAILURE);
 		}
-		if (!line[0] && ret == 0)
-			return (map);
-		map = restralloc(map, *i);
-		map[*i] = ft_strdup(line);
-		check_map(line, map, *i);
-		free(line);
-		(*i)++;
-	}
-	return (map);
-}
-
-t_env	get_map(char **map, t_env e, size_t lines)
-{
-	char	**line;
-
-	e.map = (t_point **)malloc_me(lines * sizeof(t_point *));
-	e.y = 0;
-	while (e.y != lines)
-	{
-		e.x = 0;
-		e.map[e.y] = (t_point *)malloc_me(count_nb(map[e.y]) * sizeof(t_point));
-		line = ft_strsplit(map[e.y], ' ');
-		while (e.x != count_nb(map[e.y]))
+		if (line[0])
 		{
-			e.map[e.y][e.x].z = ft_atoi(line[e.x]);
-			e = get_coord(e, e.y, e.x);
-			free(line[e.x]);
-			e.x++;
+			e = line_to_coord(e, line);
+			if (e.y == 0)
+				nb_nb = e.x;
+			check_map(line, nb_nb, e.y);
+			free(line);
+			e.y++;
 		}
-		free(line);
-		free(map[e.y]);
-		e.y++;
 	}
-	free(map);
 	return (e);
 }
 
-t_env	init_e(int ac, char **av, size_t x, size_t y)
+t_env	init_e(int ac, char **av, t_env e)
 {
-	t_env	e;
-
 	e.z_scale = 0.15;
 	e.iso = 1;
 	if (ac == 4 && ft_atoi(av[2]) > 0 && ft_atoi(av[3]) > 0)
@@ -96,10 +79,13 @@ t_env	init_e(int ac, char **av, size_t x, size_t y)
 		e.x_win = 1000;
 		e.y_win = 1000;
 	}
-	e.scale = (e.y_win / y < e.x_win / x) ? e.y_win / 3 / y : e.x_win / 3 / x;
+	if (e.y_win / e.y < e.x_win / e.x)
+		e.scale = e.y_win / 3 / e.y;
+	else
+		e.scale = e.x_win / 3 / e.x;
 	if (e.scale < 0.2)
 		e.scale = 0.2;
-	e.x_mv = e.x_win / 2 - e.scale * (x - y);
+	e.x_mv = e.x_win / 2 - e.scale * (e.x - e.y);
 	e.y_mv = e.y_win / 4;
 	return (e);
 }
@@ -107,8 +93,6 @@ t_env	init_e(int ac, char **av, size_t x, size_t y)
 int		main(int ac, char **av)
 {
 	t_env	e;
-	char	**map;
-	size_t	lines;
 	int		fd;
 
 	if (ac == 1)
@@ -122,9 +106,9 @@ int		main(int ac, char **av)
 		perror(av[1]);
 		exit(EXIT_FAILURE);
 	}
-	map = map_to_str(fd, &lines);
-	e = init_e(ac, av, count_nb(map[0]), lines);
-	e = get_map(map, e, lines);
+	e = map_to_str(fd, e);
+	e = init_e(ac, av, e);
+	e = compute_map(e);
 	fdf(e);
 	return (0);
 }

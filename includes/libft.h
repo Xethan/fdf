@@ -6,7 +6,7 @@
 /*   By: ncolliau <ncolliau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/04 13:57:05 by ncolliau          #+#    #+#             */
-/*   Updated: 2015/01/12 11:51:52 by ncolliau         ###   ########.fr       */
+/*   Updated: 2015/01/15 15:47:49 by ncolliau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct		s_list
 
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t n);
+void				ft_freetab(char **tab, int size);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
@@ -61,6 +62,8 @@ void				ft_putnbr_nl(int nbr);
 void				ft_putnbr_nl_fd(int nbr, int fd);
 void				ft_putstr(char const *s);
 void				ft_putstr_fd(char const *s, int fd);
+char				**ft_restralloc(char **map, int length, size_t size);
+char				**ft_sizesplit(char const *s, char c, size_t *size);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strcdup(const char *s, char c);
 char				*ft_strchr(const char *s, int c);
